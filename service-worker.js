@@ -1,4 +1,4 @@
-var CACHE="matematika20-offline-stable-20261006-1";
+var CACHE="matematika20-offline-numberline-20261007-2";
 var CORE=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
 
 self.addEventListener("install",function(event){

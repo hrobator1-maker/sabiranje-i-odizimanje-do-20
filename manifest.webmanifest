@@ -3,7 +3,7 @@
   "short_name": "Matematika 20",
   "description": "Offline aplikacija za učenje sabiranja i oduzimanja do 20.",
   "lang": "bs",
-  "start_url": "./?offline=1",
+  "start_url": "./?offline=2",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",

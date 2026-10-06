@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Matematika 20">
-<link rel="manifest" href="./manifest.webmanifest?v=offline1">
+<link rel="manifest" href="./manifest.webmanifest?v=offline2">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <title>Sabiranje i oduzimanje do 20</title>
 <style>
@@ -23,6 +23,20 @@ button,input{font:inherit}.top{display:flex;justify-content:space-between;gap:8p
 .answerInput{display:block;width:min(260px,80%);min-height:78px;margin:12px auto;border:4px solid #2764d8;border-radius:18px;padding:8px;text-align:center;background:#fff;color:#111;font-size:46px;font-weight:950;-webkit-user-select:text;user-select:text}.keypad{display:grid;grid-template-columns:repeat(3,88px);gap:8px;justify-content:center;margin:10px}.key{height:60px;border:3px solid #b9cff0;border-radius:14px;background:#fff;color:#17324b;font-size:28px;font-weight:900}
 .panel{background:#fff;border:3px solid #d5e2f4;border-radius:20px;padding:16px;margin:12px auto;width:min(720px,100%)}.row{display:grid;grid-template-columns:1fr 2fr;gap:9px;align-items:center;margin:10px 0;text-align:left}.name{display:block;width:100%;min-height:58px;border:3px solid #8fb1e1;border-radius:14px;padding:8px 11px;background:#fff;color:#111;font-size:20px;-webkit-user-select:text;user-select:text}.progress{font-size:18px;font-weight:900;min-height:28px}.scoreboard{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}.chip{padding:8px 11px;border-radius:12px;background:#e3edf9;font-weight:900}.chip.active{background:#ffd866}.result{font-size:27px;line-height:1.5;font-weight:900}
 @media(max-width:650px){.grid,.grid3{grid-template-columns:1fr}.big{min-height:74px}.answers{gap:7px}.answer{min-height:74px}.row{grid-template-columns:1fr}.keypad{grid-template-columns:repeat(3,minmax(70px,88px))}}
+
+.numberlineWrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:34px 8px 18px;margin:6px auto 12px}
+.numberline{position:relative;display:flex;align-items:flex-start;justify-content:space-between;min-width:560px;width:100%;height:105px;padding:0 18px}
+.numberline:before{content:"";position:absolute;left:18px;right:18px;top:30px;height:5px;background:#17324b;border-radius:4px}
+.tick{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-width:22px;font-size:15px;font-weight:900}
+.tick:before{content:"";width:5px;height:24px;background:#17324b;margin:20px 0 5px;border-radius:3px}
+.tick.start:before{background:#2764d8;height:31px;margin-top:13px}
+.tick.finish:before{background:#16853b;height:31px;margin-top:13px}
+.jumpRow{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;min-height:42px;margin-top:-8px}
+.jump{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:38px;padding:0 8px;border-radius:20px;background:#e7f0ff;color:#174a9b;font-size:18px;font-weight:950}
+.jump.minus{background:#ffe8e8;color:#b42323}
+.lineHint{font-size:19px;font-weight:900;margin:2px 0 8px}
+@media(max-width:650px){.numberline{min-width:520px}.numberlineWrap{padding-left:0;padding-right:0}}
+
 </style>
 </head>
 <body>
@@ -86,9 +100,23 @@ function options(ans){var x=[ans],v;while(x.length<3){v=ans+rnd(7)-3;if(v>=0&&v<
 function stars(n){var s="";for(var i=0;i<n;i++)s+="⭐";return s}
 function crossed(a,b){var s="";for(var i=0;i<a;i++)s+=i>=a-b?"❌":"⭐";return s}
 function beep(ok){if(!soundEnabled)return;try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;var c=new AC(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=ok?650:220;g.gain.value=.04;o.start();setTimeout(function(){o.stop();c.close()},100)}catch(e){}}
+function numberLineHTML(t){
+ var out='<div class="lineHint">'+(t.op==="add"?'KRENI OD '+t.a+' I POMJERI SE '+t.b+' MJESTA UDESNO':'KRENI OD '+t.a+' I POMJERI SE '+t.b+' MJESTA ULIJEVO')+'</div>';
+ out+='<div class="numberlineWrap"><div class="numberline">';
+ for(var n=0;n<=max;n++){
+  var cl="tick";
+  if(n===t.a)cl+=" start";
+  if(n===t.ans)cl+=" finish";
+  out+='<span class="'+cl+'">'+n+'</span>';
+ }
+ out+='</div></div><div class="jumpRow">';
+ for(var j=0;j<t.b;j++)out+='<span class="jump '+(t.op==="sub"?"minus":"")+'">'+(t.op==="add"?"+1 →":"← −1")+'</span>';
+ out+='</div>';
+ return out;
+}
 function draw(){
 current=makeTask(mode==="learn"?learnOp:(mode==="competition"?compOp:series.op));document.getElementById("problem").innerHTML=current.a+" "+sign(current.op)+" "+current.b+" = ?";
-var vis=document.getElementById("visual");if(mode==="learn"&&(level===1||level===2))vis.innerHTML=current.op==="add"?stars(current.a)+" &nbsp;+&nbsp; "+stars(current.b):crossed(current.a,current.b);else vis.innerHTML="";
+var vis=document.getElementById("visual");if(mode==="learn"&&(level===1||level===2))vis.innerHTML=current.op==="add"?stars(current.a)+" &nbsp;+&nbsp; "+stars(current.b):crossed(current.a,current.b);else if(mode==="learn"&&level===3)vis.innerHTML=numberLineHTML(current);else vis.innerHTML="";
 document.getElementById("feedback").innerHTML="";document.getElementById("next").style.display="none";document.getElementById("resultInput").value="";
 var input=(mode==="learn"&&level===5);document.getElementById("answers").style.display=input?"none":"grid";document.getElementById("inputBlock").style.display=input?"block":"none";
 var vals=options(current.ans);for(var i=0;i<3;i++){var b=document.getElementById("a"+i);b.innerHTML=vals[i];b.className="answer";b.disabled=false}
@@ -123,7 +151,7 @@ nav.style.display="none";
  if(!("serviceWorker" in navigator)) return;
  if(location.protocol!=="https:" && location.hostname!=="localhost") return;
  window.addEventListener("load",function(){
-   navigator.serviceWorker.register("./service-worker.js?v=offline1",{scope:"./"})
+   navigator.serviceWorker.register("./service-worker.js?v=offline2",{scope:"./"})
    .then(function(reg){ reg.update(); })
    .catch(function(err){
      var f=document.getElementById("feedback");
