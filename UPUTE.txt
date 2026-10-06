@@ -1,0 +1,21 @@
+MATEMATIKA DO 20 — OFFLINE INSTALACIJA
+
+Na GitHub repositoryju zamijeni / uploaduj ovih 5 datoteka:
+index.html
+manifest.webmanifest
+service-worker.js
+icon-192.png
+icon-512.png
+
+VAŽNO:
+1. Commit changes.
+2. Sačekaj da GitHub Pages objavi izmjene.
+3. Na iPhoneu OBRIŠI staru ikonu aplikacije ako postoji.
+4. U Safariju otvori GitHub Pages adresu sa ?offline=1 na kraju.
+5. Dok još imaš internet, otvori NIVO 4 i NIVO 5 i provjeri da rade.
+6. Safari: Share > Add to Home Screen > Add.
+7. Pokreni aplikaciju jednom sa početnog ekrana dok internet još radi.
+8. Zatim isključi Wi‑Fi i mobilne podatke i ponovo pokreni aplikaciju.
+   Trebala bi raditi offline.
+
+Ova verzija koristi stabilni HTML/JS kod koji je napravljen nakon uspješnog minimalnog iPhone testa.

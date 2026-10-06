@@ -1,1 +1,49 @@
-const C="matematika20-stable-v3";const A=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];self.addEventListener("install",e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A)).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));self.addEventListener("fetch",e=>{if(e.request.method==="GET")e.respondWith(fetch(e.request).then(r=>{let x=r.clone();caches.open(C).then(c=>c.put(e.request,x));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match("./index.html"))))});
+var CACHE="matematika20-offline-stable-20261006-1";
+var CORE=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
+
+self.addEventListener("install",function(event){
+ event.waitUntil(
+  caches.open(CACHE).then(function(cache){return cache.addAll(CORE)})
+  .then(function(){return self.skipWaiting()})
+ );
+});
+
+self.addEventListener("activate",function(event){
+ event.waitUntil(
+  caches.keys().then(function(keys){
+   return Promise.all(keys.map(function(key){
+    if(key!==CACHE && key.indexOf("matematika")!==-1) return caches.delete(key);
+   }));
+  }).then(function(){return self.clients.claim()})
+ );
+});
+
+self.addEventListener("fetch",function(event){
+ if(event.request.method!=="GET") return;
+ var url=new URL(event.request.url);
+ if(url.origin!==self.location.origin) return;
+
+ if(event.request.mode==="navigate"){
+  event.respondWith(
+   fetch(event.request).then(function(response){
+    var copy=response.clone();
+    caches.open(CACHE).then(function(cache){cache.put("./index.html",copy)});
+    return response;
+   }).catch(function(){
+    return caches.match("./index.html");
+   })
+  );
+  return;
+ }
+
+ event.respondWith(
+  caches.match(event.request).then(function(cached){
+   if(cached) return cached;
+   return fetch(event.request).then(function(response){
+    var copy=response.clone();
+    caches.open(CACHE).then(function(cache){cache.put(event.request,copy)});
+    return response;
+   });
+  })
+ );
+});

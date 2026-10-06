@@ -1,20 +1,22 @@
 {
   "name": "Sabiranje i oduzimanje do 20",
   "short_name": "Matematika 20",
+  "description": "Offline aplikacija za učenje sabiranja i oduzimanja do 20.",
   "lang": "bs",
-  "start_url": "./index.html?v=3",
+  "start_url": "./?offline=1",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#f4f8ff",
   "theme_color": "#2764d8",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
