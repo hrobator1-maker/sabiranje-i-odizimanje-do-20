@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Sabiranje i oduzimanje do 20</title>
+<meta name="theme-color" content="#f4f8ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Matematika do 20">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<style>
+:root{--bg:#f4f8ff;--card:#fff;--ink:#17324d;--blue:#2764d8;--blue2:#e8f0ff;--green:#168a52;--red:#c63f3f;--yellow:#ffd75e;--shadow:0 10px 28px #17324d18}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+body{min-height:100vh;overflow-x:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+button,input{font:inherit}button{cursor:pointer;touch-action:manipulation;border:0}
+#app{min-height:100vh;padding:20px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.brand{font-weight:900;font-size:clamp(24px,3vw,44px);letter-spacing:.4px}.tag{font-size:18px;opacity:.6;font-weight:700}
+.nav{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 14px}.nav button,.smallbtn{min-height:64px;padding:12px 22px;border-radius:18px;background:#fff;color:var(--ink);font-weight:900;font-size:22px;box-shadow:var(--shadow)}
+.screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;width:min(1500px,100%);margin:auto}
+h1,h2,h3,p{margin:0;text-align:center}h1{font-size:clamp(34px,5vw,70px)}h2{font-size:clamp(30px,4vw,56px)}h3{font-size:clamp(24px,3vw,38px)}
+.menu{width:min(1200px,100%);display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:22px}
+.bigbtn{min-height:100px;padding:18px 26px;border-radius:24px;background:var(--blue);color:#fff;font-size:clamp(25px,2.5vw,38px);font-weight:900;box-shadow:var(--shadow);transition:transform .08s,filter .08s}
+.bigbtn:active,.answer:active,.key:active{transform:scale(.97);filter:brightness(.96)}.bigbtn.alt{background:#fff;color:var(--blue);border:4px solid var(--blue)}
+.panel{width:min(1200px,100%);background:#fff;border-radius:28px;padding:28px;box-shadow:var(--shadow)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;width:100%}
+.choice{min-height:86px;border-radius:20px;background:var(--blue2);color:var(--ink);font-size:clamp(22px,2.4vw,34px);font-weight:900;padding:14px}.choice.selected{background:var(--blue);color:#fff;outline:5px solid #aac6ff}
+.problem{font-size:clamp(58px,9vw,120px);font-weight:900;line-height:1;text-align:center}.subproblem{font-size:clamp(32px,5vw,62px);font-weight:900}
+.answers{display:grid;grid-template-columns:repeat(3,minmax(150px,260px));gap:24px;justify-content:center;width:100%}
+.answer{min-height:110px;border-radius:24px;background:#fff;color:var(--ink);font-size:clamp(40px,5vw,66px);font-weight:900;box-shadow:var(--shadow);border:4px solid #d9e5f6}.answer.correct{background:#d9f6e7;border-color:var(--green);color:var(--green)}.answer.wrong{background:#ffe1e1;border-color:var(--red);color:var(--red)}
+.feedback{min-height:56px;font-size:clamp(27px,3vw,42px);font-weight:900}.good{color:var(--green)}.bad{color:var(--red)}
+.objects{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;min-height:100px}.group{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;max-width:500px}.obj{font-size:clamp(38px,4vw,58px);line-height:1}.obj.removed{opacity:.28;text-decoration:line-through;text-decoration-thickness:5px;text-decoration-color:var(--red)}
+.mathsign{font-size:60px;font-weight:900}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:min(1300px,100%)}.levelbtn{min-height:120px;border-radius:22px;background:#fff;box-shadow:var(--shadow);padding:14px;font-size:23px;font-weight:900;color:var(--ink)}.levelbtn b{display:block;color:var(--blue);font-size:32px;margin-bottom:7px}
+.actions{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;width:100%}.actions button{min-height:76px;padding:12px 24px;border-radius:20px;background:var(--blue);color:#fff;font-size:25px;font-weight:900}.actions .secondary{background:#fff;color:var(--blue);border:3px solid var(--blue)}
+.progresswrap{width:min(900px,100%)}.progressline{display:flex;justify-content:space-between;font-size:24px;font-weight:900;margin-bottom:8px}.progress{height:22px;background:#dfe8f4;border-radius:20px;overflow:hidden}.progress>div{height:100%;background:var(--blue);transition:width .25s}
+.numberline{width:min(1300px,96vw);overflow-x:auto;padding:30px 10px 15px}.nl{display:grid;grid-template-columns:repeat(21,58px);min-width:1218px;position:relative;padding-top:60px}.tick{text-align:center;font-size:23px;font-weight:800;border-top:5px solid var(--ink);padding-top:9px;position:relative}.tick:before{content:"";position:absolute;top:-11px;left:50%;height:18px;border-left:4px solid var(--ink)}.tick.start,.tick.end{color:var(--blue);font-size:30px}.tick.end{color:var(--green)}
+.jumps{position:absolute;left:0;top:0;width:100%;height:55px;pointer-events:none}.jump{position:absolute;height:42px;border:4px solid var(--blue);border-bottom:0;border-radius:50% 50% 0 0;opacity:0;animation:appear .45s forwards}.jump.back{border-top-color:#9a4fd0;border-left-color:#9a4fd0;border-right-color:#9a4fd0}@keyframes appear{to{opacity:1}}
+.keypad{display:grid;grid-template-columns:repeat(3,120px);gap:14px;justify-content:center}.key{height:82px;border-radius:18px;background:#fff;box-shadow:var(--shadow);font-size:38px;font-weight:900}.entry{min-width:180px;min-height:90px;border:5px solid #bfd0e6;border-radius:20px;background:#fff;font-size:60px;font-weight:900;text-align:center;padding:8px}
+.scoretable{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.scorechip{background:#fff;border:4px solid transparent;border-radius:18px;padding:12px 20px;font-size:23px;font-weight:900;box-shadow:var(--shadow)}.scorechip.active{border-color:var(--blue);background:var(--blue2)}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center;margin:15px 0}.formrow label{font-size:25px;font-weight:900}.nameinput{width:100%;min-height:72px;border:4px solid #bfd0e6;border-radius:18px;padding:10px 16px;font-size:30px;font-weight:800}
+.resultbox{font-size:clamp(28px,3.5vw,48px);line-height:1.6;font-weight:800;text-align:center}.winner{font-size:clamp(45px,7vw,90px);font-weight:1000;color:var(--green)}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden}.confetti i{position:absolute;top:-30px;font-style:normal;font-size:28px;animation:fall 2.5s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(600deg)}}
+.note{font-size:22px;text-align:center;opacity:.78}.helpbox{background:#fff8d7;border:4px solid #ffd75e;border-radius:22px;padding:18px;font-size:25px;font-weight:800;text-align:center;width:min(900px,100%)}
+@media(max-width:900px){#app{padding:12px}.menu,.grid2,.grid3{grid-template-columns:1fr}.levels{grid-template-columns:1fr 1fr}.answers{grid-template-columns:repeat(3,1fr);gap:10px}.answer{min-width:0}.formrow{grid-template-columns:1fr}.brand{font-size:24px}.tag{font-size:14px}}
+@media(max-width:600px){.levels{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.keypad{grid-template-columns:repeat(3,90px)}}
+
+/* Mobilni telefoni: iOS Safari i Android Chrome */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;height:100%;background:var(--bg)}
+body{min-height:100svh;min-height:100dvh;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+#app{
+ min-height:100svh;min-height:100dvh;
+ padding-top:max(20px,env(safe-area-inset-top));
+ padding-right:max(20px,env(safe-area-inset-right));
+ padding-bottom:max(20px,env(safe-area-inset-bottom));
+ padding-left:max(20px,env(safe-area-inset-left))
+}
+button{min-width:48px;-webkit-appearance:none;appearance:none}
+input{font-size:16px;-webkit-appearance:none;appearance:none}
+.numberline{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+@media (hover:none) and (pointer:coarse){
+ button:hover{filter:none}
+ .bigbtn,.answer,.key,.choice,.smallbtn,.actions button,.levelbtn{touch-action:manipulation}
+}
+@media(max-width:700px){
+ #app{
+  padding-top:max(10px,env(safe-area-inset-top));
+  padding-right:max(10px,env(safe-area-inset-right));
+  padding-bottom:max(12px,env(safe-area-inset-bottom));
+  padding-left:max(10px,env(safe-area-inset-left))
+ }
+ header{min-height:52px;gap:8px;align-items:flex-start}
+ .brand{font-size:clamp(18px,5.5vw,26px);line-height:1.08;max-width:82%}
+ .tag{font-size:12px;padding-top:3px}
+ .nav{position:relative;z-index:10;margin:4px 0 8px;padding-bottom:6px}
+ .nav button,.smallbtn{min-height:52px;padding:8px 14px;border-radius:14px;font-size:16px}
+ .screen{justify-content:flex-start;gap:14px;padding-top:4px}
+ h1{font-size:clamp(29px,9vw,45px)}
+ h2{font-size:clamp(26px,8vw,40px)}
+ h3{font-size:clamp(20px,6vw,29px)}
+ .menu{grid-template-columns:1fr;gap:12px}
+ .bigbtn{min-height:76px;padding:12px 18px;border-radius:19px;font-size:clamp(21px,6vw,29px)}
+ .panel{padding:16px;border-radius:20px}
+ .grid2,.grid3{grid-template-columns:1fr;gap:10px}
+ .choice{min-height:66px;border-radius:16px;font-size:20px;padding:10px}
+ .levels{grid-template-columns:1fr;gap:10px}
+ .levelbtn{min-height:82px;font-size:18px;border-radius:17px}
+ .levelbtn b{font-size:24px;margin-bottom:3px}
+ .problem{font-size:clamp(48px,16vw,82px);margin:5px 0}
+ .subproblem{font-size:clamp(30px,9vw,48px)}
+ .objects{gap:10px;min-height:72px}
+ .group{gap:5px;max-width:92vw}
+ .obj{font-size:clamp(30px,9vw,45px)}
+ .mathsign{font-size:42px}
+ .answers{grid-template-columns:repeat(3,1fr);gap:9px}
+ .answer{min-height:76px;border-radius:17px;font-size:clamp(34px,11vw,52px);border-width:3px}
+ .feedback{min-height:40px;font-size:clamp(23px,7vw,33px)}
+ .actions{gap:9px}
+ .actions button{min-height:58px;padding:9px 14px;border-radius:16px;font-size:18px;flex:1 1 140px}
+ .helpbox{padding:12px;border-radius:17px;font-size:19px}
+ .progressline{font-size:17px}
+ .progress{height:16px}
+ .numberline{width:100%;padding:24px 0 8px}
+ .nl{grid-template-columns:repeat(21,48px);min-width:1008px;padding-top:55px}
+ .tick{font-size:18px}
+ .tick.start,.tick.end{font-size:23px}
+ .keypad{grid-template-columns:repeat(3,minmax(74px,100px));gap:9px;width:100%}
+ .key{height:66px;border-radius:15px;font-size:31px}
+ .entry{min-width:150px;min-height:68px;font-size:45px}
+ .scoretable{gap:7px;max-height:105px;overflow:auto}
+ .scorechip{padding:8px 11px;border-radius:13px;font-size:16px}
+ .formrow{gap:6px;margin:10px 0}
+ .formrow label{font-size:18px;text-align:left}
+ .nameinput{min-height:58px;border-width:3px;border-radius:14px;padding:8px 12px;font-size:20px}
+ .resultbox{font-size:clamp(24px,7vw,34px)}
+ .winner{font-size:clamp(42px,14vw,70px)}
+ .note{font-size:17px}
+}
+@media(max-width:390px){
+ .answers{gap:6px}
+ .answer{min-height:68px}
+ .actions button{font-size:16px}
+ .obj{font-size:29px}
+}
+@media(max-height:500px) and (orientation:landscape){
+ #app{padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom))}
+ header{min-height:38px}.brand{font-size:18px}.tag{font-size:11px}
+ .nav{margin:0 0 4px}.nav button,.smallbtn{min-height:42px;font-size:14px;padding:5px 11px}
+ .screen{gap:8px;justify-content:flex-start}
+ h1{font-size:30px}h2{font-size:25px}h3{font-size:20px}
+ .menu{grid-template-columns:repeat(2,1fr);gap:8px}
+ .bigbtn{min-height:56px;font-size:19px;padding:8px}
+ .levels{grid-template-columns:repeat(3,1fr);gap:7px}
+ .levelbtn{min-height:62px;font-size:15px}.levelbtn b{font-size:19px}
+ .problem{font-size:52px}
+ .objects{min-height:48px}.obj{font-size:28px}
+ .answer{min-height:58px;font-size:34px}
+ .feedback{min-height:30px;font-size:22px}
+ .actions button{min-height:46px;font-size:16px}
+ .panel{padding:10px}
+ .choice{min-height:50px;font-size:17px}
+ .grid3{grid-template-columns:repeat(3,1fr)}
+ .keypad{grid-template-columns:repeat(5,72px);gap:6px}.key{height:48px;font-size:25px}
+ .entry{min-height:52px;font-size:34px}
+}
+
+
+/* iPhone/iPad Safari kompatibilnost */
+button,a,input{-webkit-touch-callout:none}
+button{display:block}
+.menu button,.answers button,.actions button,.levels button,.grid2 button,.grid3 button{width:100%}
+.screen,.menu,.panel,.answers,.actions,.levels{min-width:0}
+@supports (-webkit-touch-callout:none){
+ body{position:relative;width:100%;overflow-x:hidden}
+ #app{width:100%;min-height:-webkit-fill-available}
+ .screen{width:100%}
+ button{cursor:default}
+}
+
+</style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="application-name" content="Matematika do 20">
+
+</head>
+<body>
+<div id="app">
+<header><div class="brand">SABIRANJE I ODUZIMANJE DO 20</div><div class="tag">dbahrudin</div></header>
+<div id="nav" class="nav"></div><main id="screen" class="screen"></main>
+</div>
+<script>
+
+(function(){
+"use strict";
+var screen=document.getElementById("screen"),nav=document.getElementById("nav");
+var DEFAULT={operation:"both",max:20,sound:true,pictures:true,numberline:true,animations:true,autoNext:false,autoDelay:2,lastLevel:1};
+var settings={}; var k;
+for(k in DEFAULT) settings[k]=DEFAULT[k];
+try{var saved=JSON.parse(localStorage.getItem("math20settings")||"{}");for(k in saved)settings[k]=saved[k];}catch(e){}
+var state={page:"home",learnOp:"add",level:1,current:null,answered:false,used:{},series:null,competition:null};
+var icons=["🍎","⚽","⭐","●","🌼","✏️","🟦","🐞"];
+
+function save(){try{localStorage.setItem("math20settings",JSON.stringify(settings));}catch(e){}}
+function makeBtn(txt,fn,cls){var b=document.createElement("button");b.className=cls||"bigbtn";b.appendChild(document.createTextNode(txt));b.onclick=fn;return b;}
+function clearScreen(){while(screen.firstChild)screen.removeChild(screen.firstChild);}
+function setNav(back,home){while(nav.firstChild)nav.removeChild(nav.firstChild);if(back)nav.appendChild(makeBtn("← NAZAD",goBack,"smallbtn"));if(home)nav.appendChild(makeBtn("⌂ POČETNA",showHome,"smallbtn"));}
+function heading(t){var h=document.createElement("h2");h.appendChild(document.createTextNode(t));screen.appendChild(h);}
+function goBack(){if(state.page==="learnTask")showLearnLevels(state.learnOp);else if(state.page==="series")showPractice();else if(state.page==="competition")showCompetitionSetup();else showHome();}
+function rand(n){return Math.floor(Math.random()*n);}
+function opSym(op){return op==="add"?"+":"−";}
+function taskKey(t){return String(t.a)+t.op+String(t.b);}
+function genTask(op,max,used){
+ max=max||settings.max; var tries=0,t,actual,a,b;
+ do{
+  actual=op==="both"?(Math.random()<0.5?"add":"sub"):op;
+  if(actual==="add"){a=rand(max+1);b=rand(max-a+1);t={a:a,b:b,op:"add",ans:a+b};}
+  else{a=rand(max+1);b=rand(a+1);t={a:a,b:b,op:"sub",ans:a-b};}
+  tries++;
+ }while(used&&used[taskKey(t)]&&tries<100);
+ if(used)used[taskKey(t)]=true; return t;
+}
+function shuffle(a){var i,j,x;for(i=a.length-1;i>0;i--){j=rand(i+1);x=a[i];a[i]=a[j];a[j]=x;}return a;}
+function choices(ans,max){max=typeof max==="number"?max:settings.max;var a=[ans],d=[-2,-1,1,2,3,-3],i,v;shuffle(d);for(i=0;i<d.length&&a.length<3;i++){v=ans+d[i];if(v>=0&&v<=max&&a.indexOf(v)<0)a.push(v);}while(a.length<3){v=rand(max+1);if(a.indexOf(v)<0)a.push(v);}return shuffle(a);}
+function audio(ok){if(!settings.sound)return;try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;var c=new AC(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=ok?660:230;g.gain.value=.05;o.start(0);setTimeout(function(){try{o.stop(0);c.close();}catch(e){}},140);}catch(e){}}
+
+function showHome(){
+ state.page="home";state.series=null;clearScreen();setNav(false,false);
+ var h=document.createElement("h1");h.appendChild(document.createTextNode("UČIMO I VJEŽBAMO"));screen.appendChild(h);
+ var m=document.createElement("div");m.className="menu";
+ var items=[
+ ["UČIMO SABIRANJE",function(){showLearnLevels("add");}],
+ ["UČIMO ODUZIMANJE",function(){showLearnLevels("sub");}],
+ ["VJEŽBAMO",showPractice],["BRZI KVIZ",showQuizSetup],["TAKMIČENJE",showCompetitionSetup],["POSTAVKE",showSettings]
+ ];
+ for(var i=0;i<items.length;i++)m.appendChild(makeBtn(items[i][0],items[i][1],items[i][0]==="POSTAVKE"?"bigbtn alt":"bigbtn"));
+ screen.appendChild(m);
+}
+function showLearnLevels(op){
+ state.page="learnLevels";state.learnOp=op;clearScreen();setNav(true,true);heading(op==="add"?"UČIMO SABIRANJE":"UČIMO ODUZIMANJE");
+ var names=op==="add"?["SABIRANJE SLIKA","SLIKA + BROJEVI","BROJEVNA PRAVA","SABIRANJE BROJEVA","SAMOSTALNI UNOS"]:["ODUZIMANJE UZ SLIKE","SLIKA + BROJEVI","BROJEVNA PRAVA","ODUZIMANJE BROJEVA","SAMOSTALNI UNOS"];
+ var l=document.createElement("div");l.className="levels";
+ for(var i=0;i<5;i++)(function(n){var b=makeBtn("NIVO "+n+" — "+names[n-1],function(){startLearn(n);},"levelbtn");l.appendChild(b);})(i+1);
+ screen.appendChild(l);
+}
+function startLearn(level){state.page="learnTask";state.level=level;settings.lastLevel=level;save();state.used={};newLearnTask();}
+function newLearnTask(){state.current=genTask(state.learnOp,settings.max,state.used);state.answered=false;renderLearn();}
+function objectGroup(n,icon,removeFrom){var g=document.createElement("div");g.className="group";for(var i=0;i<n;i++){var x=document.createElement("span");x.className="obj"+(i>=removeFrom?" removed":"");x.appendChild(document.createTextNode(icon));g.appendChild(x);}return g;}
+function renderObjects(t,withNumbers){
+ if(!settings.pictures)return;
+ var w=document.createElement("div");w.className="objects";var icon=icons[rand(icons.length)];
+ if(t.op==="add"){w.appendChild(objectGroup(t.a,icon,999));var sg=document.createElement("b");sg.className="mathsign";sg.appendChild(document.createTextNode("+"));w.appendChild(sg);w.appendChild(objectGroup(t.b,icon,999));}
+ else w.appendChild(objectGroup(t.a,icon,t.a-t.b));
+ screen.appendChild(w);
+ if(withNumbers){var p=document.createElement("div");p.className="subproblem";p.appendChild(document.createTextNode(t.a+" "+opSym(t.op)+" "+t.b+" = ?"));screen.appendChild(p);}
+}
+function problem(t){var p=document.createElement("div");p.className="problem";p.appendChild(document.createTextNode(t.a+" "+opSym(t.op)+" "+t.b+" = ?"));screen.appendChild(p);}
+function renderLearn(){
+ clearScreen();setNav(true,true);var t=state.current;heading((state.learnOp==="add"?"SABIRANJE":"ODUZIMANJE")+" — NIVO "+state.level);
+ if(state.level===1||state.level===2)renderObjects(t,true);
+ if((state.level===1||state.level===2)&&!settings.pictures)problem(t);
+ if(state.level===3){problem(t);if(settings.numberline)renderNumberLine(t,false);}
+ if(state.level===4)problem(t);
+ if(state.level===5){renderInputTask(t);return;}
+ renderAnswers(t,newLearnTask,false);
+ var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("POMOĆ",function(){showHelp(t);},"secondary"));
+ if(state.level===3&&settings.numberline)ac.appendChild(makeBtn("POKAŽI KORAKE",function(){renderNumberLine(t,true,true);},"secondary"));screen.appendChild(ac);
+}
+function renderAnswers(t,next,advanceWrong){
+ var a=document.createElement("div");a.className="answers",vals=choices(t.ans,settings.max);
+ for(var i=0;i<vals.length;i++)(function(v){var b=makeBtn(String(v),function(){checkChoice(b,v,t,next,advanceWrong);},"answer");a.appendChild(b);})(vals[i]);
+ screen.appendChild(a);var f=document.createElement("div");f.className="feedback";f.id="feedback";screen.appendChild(f);
+}
+function checkChoice(b,v,t,next,advanceWrong){
+ if(state.answered)return;var ok=v===t.ans,f=document.getElementById("feedback");audio(ok);
+ if(ok){b.className+=" correct";f.innerHTML="BRAVO! TAČNO.";f.className="feedback good";state.answered=true;if(state.series)recordSeries(true);if(state.competition&&state.page==="competition"){recordCompetition(true);return;}nextButton(next);}
+ else{b.className+=" wrong";f.innerHTML="POKUŠAJ PONOVO.";f.className="feedback bad";setTimeout(function(){b.className=b.className.replace(" wrong","");},500);if(state.series&&advanceWrong){state.answered=true;recordSeries(false);nextButton(next);}if(state.competition&&state.page==="competition"){state.answered=true;recordCompetition(false);}}
+}
+function nextButton(next){if(settings.autoNext&&settings.autoDelay!=="manual")setTimeout(next,Number(settings.autoDelay)*1000);else{var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("SLJEDEĆI ZADATAK",next));screen.appendChild(ac);}}
+function renderInputTask(t){
+ var p=document.createElement("div");p.className="problem";p.appendChild(document.createTextNode(t.a+" "+opSym(t.op)+" "+t.b+" ="));screen.appendChild(p);
+ var e=document.createElement("div");e.className="entry";screen.appendChild(e);var val="",kp=document.createElement("div");kp.className="keypad",nums=[1,2,3,4,5,6,7,8,9,0];
+ for(var i=0;i<nums.length;i++)(function(n){kp.appendChild(makeBtn(String(n),function(){if(val.length<2){val+=String(n);e.innerHTML=val;}},"key"));})(nums[i]);screen.appendChild(kp);
+ var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("OBRIŠI",function(){val="";e.innerHTML="";},"secondary"));ac.appendChild(makeBtn("PROVJERI",function(){if(val==="")return;var ok=Number(val)===t.ans,f=document.getElementById("feedback");audio(ok);f.innerHTML=ok?"BRAVO! TAČNO.":"POKUŠAJ PONOVO.";f.className="feedback "+(ok?"good":"bad");if(ok){state.answered=true;nextButton(newLearnTask);}}));ac.appendChild(makeBtn("POMOĆ",function(){showHelp(t);},"secondary"));screen.appendChild(ac);var f=document.createElement("div");f.id="feedback";f.className="feedback";screen.appendChild(f);
+}
+function renderNumberLine(t,steps,replace){
+ if(replace){var old=document.getElementById("numline");if(old&&old.parentNode)old.parentNode.removeChild(old);}
+ var box=document.createElement("div");box.className="numberline";box.id="numline";var nl=document.createElement("div");nl.className="nl";
+ for(var i=0;i<=20;i++){var d=document.createElement("div");d.className="tick"+(i===t.a?" start":"")+(steps&&i===t.ans?" end":"");d.appendChild(document.createTextNode(String(i)));nl.appendChild(d);}
+ box.appendChild(nl);screen.appendChild(box);
+ if(steps){var note=document.createElement("div");note.className="note";note.appendChild(document.createTextNode(t.op==="add"?"Kreni od "+t.a+" i pomjeri se "+t.b+" mjesta naprijed.":"Kreni od "+t.a+" i pomjeri se "+t.b+" mjesta nazad."));box.appendChild(note);}
+}
+function showHelp(t){var old=document.getElementById("help");if(old){old.parentNode.removeChild(old);return;}var h=document.createElement("div");h.id="help";h.className="helpbox";h.appendChild(document.createTextNode(t.op==="add"?"POMOĆ: prebroj prvu količinu, zatim dodaj drugu.":"POMOĆ: kreni od prve količine i ukloni drugu količinu."));screen.appendChild(h);if(settings.pictures)h.appendChild(objectGroup(t.op==="add"?t.a+t.b:t.a,icons[2],t.op==="sub"?t.ans:999));}
+
+function showPractice(){state.page="practiceSetup";state.series=null;clearScreen();setNav(true,true);heading("VJEŽBAMO");var g=document.createElement("div");g.className="grid3";var arr=[["SABIRANJE","add"],["ODUZIMANJE","sub"],["SABIRANJE I ODUZIMANJE","both"],["ODABERI ZNAK","sign"],["PRONAĐI BROJ KOJI NEDOSTAJE","missing"]];for(var i=0;i<arr.length;i++)(function(x){g.appendChild(makeBtn(x[0],function(){chooseSeriesLength(x[1]);},"choice"));})(arr[i]);screen.appendChild(g);}
+function chooseSeriesLength(type){clearScreen();setNav(true,true);heading("KOLIKO ZADATAKA?");var g=document.createElement("div");g.className="grid3",nums=[5,10,20];for(var i=0;i<3;i++)(function(n){g.appendChild(makeBtn(n+" ZADATAKA",function(){startSeries(type,n);},"choice"));})(nums[i]);screen.appendChild(g);}
+function startSeries(type,total){state.page="series";state.used={};state.series={type:type,total:total,index:0,correct:0,wrong:0,quiz:false};nextSeries();}
+function progress(i,total){var w=document.createElement("div");w.className="progresswrap";w.innerHTML='<div class="progressline"><span>ZADATAK '+i+' / '+total+'</span><span>BODOVI: '+state.series.correct+'</span></div><div class="progress"><div style="width:'+((i-1)/total*100)+'%"></div></div>';screen.appendChild(w);}
+function nextSeries(){var s=state.series;if(s.index>=s.total){showSeriesResult();return;}s.index++;state.answered=false;clearScreen();setNav(true,true);progress(s.index,s.total);if(s.type==="sign")renderSignTask();else if(s.type==="missing")renderMissingTask();else{var t=genTask(s.type,settings.max,state.used);state.current=t;problem(t);renderAnswers(t,nextSeries,true);}}
+function recordSeries(ok){if(ok)state.series.correct++;else state.series.wrong++;}
+function renderSignTask(){var max=settings.max,a=rand(max+1),b=rand(max+1),op=Math.random()<.5?"add":"sub";if(op==="add"&&a+b>max)b=max-a;if(op==="sub"&&b>a){var z=a;a=b;b=z;}var ans=opSym(op),result=op==="add"?a+b:a-b,p=document.createElement("div");p.className="problem";p.innerHTML=a+" ? "+b+" = "+result;screen.appendChild(p);var ar=document.createElement("div");ar.className="answers";var signs=["+","−"];for(var i=0;i<2;i++)(function(v){var btt=makeBtn(v,function(){if(state.answered)return;state.answered=true;var ok=v===ans;recordSeries(ok);audio(ok);btt.className+=" "+(ok?"correct":"wrong");var f=document.getElementById("feedback");f.innerHTML=ok?"BRAVO! TAČNO.":"NETAČNO.";f.className="feedback "+(ok?"good":"bad");nextButton(nextSeries);},"answer");ar.appendChild(btt);})(signs[i]);screen.appendChild(ar);var f=document.createElement("div");f.id="feedback";f.className="feedback";screen.appendChild(f);}
+function renderMissingTask(){var t=genTask("both",settings.max,state.used),kind=rand(2),display,missing;if(t.op==="add"){missing=kind?t.b:t.a;display=kind?t.a+" + ? = "+t.ans:"? + "+t.b+" = "+t.ans;}else{missing=kind?t.b:t.a;display=kind?t.a+" − ? = "+t.ans:"? − "+t.b+" = "+t.ans;}var fake={a:t.a,b:t.b,op:t.op,ans:missing},p=document.createElement("div");p.className="problem";p.innerHTML=display;screen.appendChild(p);renderAnswers(fake,nextSeries,true);}
+function showSeriesResult(){var s=state.series,pct=Math.round(s.correct/s.total*100);state.page="seriesResult";clearScreen();setNav(false,true);heading(s.quiz?"TVOJ REZULTAT":"REZULTAT");var r=document.createElement("div");r.className="panel resultbox";if(s.quiz){var msg=pct>=90?"ODLIČNO!":pct>=70?"BRAVO!":"VJEŽBAJMO JOŠ!";r.innerHTML="<b>"+s.correct+" / "+s.total+"</b><br>"+msg;}else r.innerHTML="Tačno: "+s.correct+"<br>Netačno: "+s.wrong+"<br><b>USPJEŠNOST: "+pct+"%</b>";screen.appendChild(r);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("PONOVI",function(){var q=s.quiz;startSeries(s.type,s.total);state.series.quiz=q;}));ac.appendChild(makeBtn("NOVI KVIZ",s.quiz?showQuizSetup:showPractice));ac.appendChild(makeBtn("GLAVNI MENI",showHome));screen.appendChild(ac);}
+function showQuizSetup(){state.page="quizSetup";clearScreen();setNav(true,true);heading("BRZI KVIZ — 10 ZADATAKA");var g=document.createElement("div");g.className="grid3",arr=[["SABIRANJE","add"],["ODUZIMANJE","sub"],["SABIRANJE I ODUZIMANJE","both"]];for(var i=0;i<arr.length;i++)(function(x){g.appendChild(makeBtn(x[0],function(){startSeries(x[1],10);state.series.quiz=true;},"choice"));})(arr[i]);screen.appendChild(g);}
+
+function showCompetitionSetup(){state.page="competitionSetup";clearScreen();setNav(true,true);heading("TAKMIČENJE");var g=document.createElement("div");g.className="grid3";for(var n=2;n<=5;n++)(function(num){g.appendChild(makeBtn(String(num),function(){competitionNames(num);},"choice"));})(n);screen.appendChild(g);}
+function competitionNames(n){clearScreen();setNav(true,true);heading("UNESI IMENA UČENIKA");var p=document.createElement("div");p.className="panel",inputs=[];for(var i=0;i<n;i++){var r=document.createElement("div");r.className="formrow";var l=document.createElement("label");l.innerHTML="UČENIK "+(i+1);var inp=document.createElement("input");inp.className="nameinput";inp.maxLength=16;inp.placeholder="Učenik "+(i+1);r.appendChild(l);r.appendChild(inp);p.appendChild(r);inputs.push(inp);}screen.appendChild(p);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("DALJE",function(){var names=[];for(var j=0;j<inputs.length;j++)names.push(inputs[j].value.replace(/^\s+|\s+$/g,"")||("Učenik "+(j+1)));competitionOptions(names);}));screen.appendChild(ac);}
+function competitionOptions(names){clearScreen();setNav(true,true);heading("POSTAVKE TAKMIČENJA");var op="both",max=10,total=5,p=document.createElement("div");p.className="panel";function group(title,arr,setter){var h=document.createElement("h3");h.innerHTML=title;p.appendChild(h);var g=document.createElement("div");g.className="grid3";for(var i=0;i<arr.length;i++)(function(x){g.appendChild(makeBtn(x[0],function(){setter(x[1]);},"choice"));})(arr[i]);p.appendChild(g);}group("OPERACIJA",[["SABIRANJE","add"],["ODUZIMANJE","sub"],["OBOJE","both"]],function(v){op=v;});group("TEŽINA",[["LAKO — DO 5",5],["SREDNJE — DO 10",10],["TEŽE — DO 20",20]],function(v){max=v;});group("ZADATAKA PO UČENIKU",[["5",5],["10",10],["15",15]],function(v){total=v;});screen.appendChild(p);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("POČNI TAKMIČENJE",function(){startCompetition(names,op,max,total);}));screen.appendChild(ac);}
+function startCompetition(names,op,max,total){var players=[];for(var i=0;i<names.length;i++)players.push({name:names[i],score:0,done:0});state.page="competition";state.used={};state.competition={players:players,op:op,max:max,total:total,turn:0};nextCompetition();}
+function nextCompetition(){var c=state.competition,done=true;for(var i=0;i<c.players.length;i++)if(c.players[i].done<c.total)done=false;if(done){finishCompetition();return;}var p=c.players[c.turn%c.players.length];c.turn++;c.currentPlayer=p;state.answered=false;state.current=genTask(c.op,c.max,state.used);renderCompetition();}
+function renderCompetition(){clearScreen();setNav(false,true);var c=state.competition,p=c.currentPlayer,sc=document.createElement("div");sc.className="scoretable";for(var i=0;i<c.players.length;i++){var d=document.createElement("div");d.className="scorechip"+(c.players[i]===p?" active":"");d.innerHTML=c.players[i].name+": "+c.players[i].score;sc.appendChild(d);}screen.appendChild(sc);var h=document.createElement("h2");h.innerHTML="NA REDU JE:<br><span style='color:#2764d8'>"+p.name+"</span>";screen.appendChild(h);problem(state.current);renderAnswers(state.current,nextCompetition,true);}
+function recordCompetition(ok){var c=state.competition,p=c.currentPlayer;if(ok)p.score++;p.done++;var f=document.getElementById("feedback");f.innerHTML=ok?"+1 BOD — TAČNO!":"0 BODOVA — NETAČNO.";f.className="feedback "+(ok?"good":"bad");setTimeout(nextCompetition,650);}
+function finishCompetition(){var c=state.competition,sorted=c.players.slice().sort(function(a,b){return b.score-a.score;}),top=sorted[0].score,tied=[];for(var i=0;i<sorted.length;i++)if(sorted[i].score===top)tied.push(sorted[i]);clearScreen();state.page="competitionResult";setNav(false,true);heading("KONAČNI REZULTATI");var r=document.createElement("div");r.className="panel resultbox";for(i=0;i<sorted.length;i++)r.innerHTML+=(i+1)+". "+sorted[i].name+" — "+sorted[i].score+" BODOVA<br>";screen.appendChild(r);if(tied.length===1){var w=document.createElement("div");w.innerHTML="<h3>POBJEDNIK JE:</h3><div class='winner'>"+tied[0].name+"</div><h2>BRAVO!</h2>";screen.appendChild(w);}else{var h=document.createElement("h3");h.innerHTML="IZJEDNAČENI: ";for(i=0;i<tied.length;i++)h.innerHTML+=(i?", ":"")+tied[i].name;screen.appendChild(h);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("DODATNI KRUG",function(){tieBreak(tied);}));screen.appendChild(ac);}}
+function tieBreak(tied){state.competition.tie=tied;state.competition.tieIndex=0;state.competition.tieScores={};for(var i=0;i<tied.length;i++)state.competition.tieScores[tied[i].name]=0;nextTie();}
+function nextTie(){var c=state.competition;if(c.tieIndex>=c.tie.length){var best=-1,w=[];for(var i=0;i<c.tie.length;i++){var sc=c.tieScores[c.tie[i].name];if(sc>best){best=sc;w=[c.tie[i]];}else if(sc===best)w.push(c.tie[i]);}if(w.length===1){w[0].score++;finishCompetition();}else tieBreak(w);return;}c.currentPlayer=c.tie[c.tieIndex++];state.current=genTask(c.op,c.max,state.used);state.answered=false;clearScreen();setNav(false,true);heading("DODATNI KRUG");var h=document.createElement("h2");h.innerHTML="NA REDU JE:<br>"+c.currentPlayer.name;screen.appendChild(h);problem(state.current);var a=document.createElement("div");a.className="answers",vals=choices(state.current.ans,c.max);for(var j=0;j<vals.length;j++)(function(v){var b=makeBtn(String(v),function(){if(state.answered)return;state.answered=true;var ok=v===state.current.ans;if(ok)c.tieScores[c.currentPlayer.name]++;b.className+=" "+(ok?"correct":"wrong");setTimeout(nextTie,600);},"answer");a.appendChild(b);})(vals[j]);screen.appendChild(a);}
+
+function showSettings(){state.page="settings";clearScreen();setNav(true,true);heading("POSTAVKE");var p=document.createElement("div");p.className="panel";function section(name,opts,key){var h=document.createElement("h3");h.style.margin="18px 0";h.innerHTML=name;p.appendChild(h);var g=document.createElement("div");g.className="grid3";for(var i=0;i<opts.length;i++)(function(x){var b=makeBtn(x[0],function(){settings[key]=x[1];save();var ch=g.children;for(var j=0;j<ch.length;j++)ch[j].className="choice";b.className="choice selected";},"choice");if(settings[key]===x[1])b.className+=" selected";g.appendChild(b);})(opts[i]);p.appendChild(g);}section("OPERACIJE",[["SABIRANJE","add"],["ODUZIMANJE","sub"],["SABIRANJE I ODUZIMANJE","both"]],"operation");section("BROJEVI",[["DO 5",5],["DO 10",10],["DO 20",20]],"max");section("SLIKE",[["UKLJUČENE",true],["ISKLJUČENE",false]],"pictures");section("BROJEVNA PRAVA",[["UKLJUČENA",true],["ISKLJUČENA",false]],"numberline");section("ZVUK",[["UKLJUČEN",true],["ISKLJUČEN",false]],"sound");section("ANIMACIJE",[["UKLJUČENE",true],["ISKLJUČENE",false]],"animations");section("AUTOMATSKI SLJEDEĆI",[["UKLJUČEN",true],["ISKLJUČEN",false]],"autoNext");section("VRIJEME PRELASKA",[["1 SEKUNDA",1],["2 SEKUNDE",2],["3 SEKUNDE",3],["RUČNO","manual"]],"autoDelay");screen.appendChild(p);}
+
+try{showHome();}catch(err){
+ screen.innerHTML="<div class='panel'><h2>GREŠKA PRI POKRETANJU</h2><p style='font-size:20px;margin-top:15px'>"+String(err.message||err)+"</p></div>";
+}
+})();
+
+</script>
+
+<script>
+(function(){
+  if("serviceWorker" in navigator && (location.protocol==="https:" || location.hostname==="localhost")){
+    window.addEventListener("load",function(){
+      navigator.serviceWorker.register("./service-worker.js").catch(function(){});
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
