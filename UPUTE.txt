@@ -1,23 +1,5 @@
-PWA — SABIRANJE I ODUZIMANJE DO 20
-
-DATOTEKE:
-- index.html
-- manifest.webmanifest
-- service-worker.js
-- icon-192.png
-- icon-512.png
-
-VAŽNO ZA IPHONE:
-PWA/service worker ne može raditi kada se index.html samo otvori iz Downloads/Datoteke.
-Cijeli sadržaj ovog foldera prvo treba postaviti na HTTPS web hosting.
-
-NAKON POSTAVLJANJA:
-1. Na iPhoneu otvorite HTTPS adresu u SAFARIJU.
-2. Dodirnite Share (kvadrat sa strelicom prema gore).
-3. Izaberite "Add to Home Screen" / "Dodaj na početni ekran".
-4. Potvrdite Add.
-5. Pokrenite aplikaciju preko nove ikone.
-6. Nakon prvog uspješnog učitavanja aplikacija može raditi offline.
-
-Na Androidu otvorite istu HTTPS adresu u Chromeu i koristite opciju
-"Add to Home screen" / "Install app".
+STABILNA iOS/ANDROID VERZIJA v3
+Zamijenite SVE stare datoteke na GitHubu ovim datotekama.
+Nakon objave otvorite adresu u Safariju sa dodatkom ?v=3, npr:
+https://korisnik.github.io/matematika-do-20/?v=3
+Prvo testirajte u Safariju. Zatim obrišite staru ikonu i ponovo Add to Home Screen.
