@@ -1,5 +1,0 @@
-STABILNA iOS/ANDROID VERZIJA v3
-Zamijenite SVE stare datoteke na GitHubu ovim datotekama.
-Nakon objave otvorite adresu u Safariju sa dodatkom ?v=3, npr:
-https://korisnik.github.io/matematika-do-20/?v=3
-Prvo testirajte u Safariju. Zatim obrišite staru ikonu i ponovo Add to Home Screen.
