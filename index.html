@@ -158,6 +158,76 @@ button{display:block}
  button{cursor:default}
 }
 
+
+/* iOS INTERAKCIJA — stabilni grid/flex elementi */
+.answers{
+ display:grid !important;
+ grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+ width:min(760px,100%) !important;
+ gap:12px !important;
+}
+.answers .answer{
+ display:flex !important;
+ align-items:center !important;
+ justify-content:center !important;
+ width:100% !important;
+ min-width:0 !important;
+ min-height:82px !important;
+ visibility:visible !important;
+ opacity:1 !important;
+ pointer-events:auto !important;
+ position:relative !important;
+ z-index:2 !important;
+}
+.grid2,.grid3,.levels,.menu{
+ width:min(1050px,100%) !important;
+}
+.grid2 button,.grid3 button,.levels button,.menu button,.actions button{
+ visibility:visible !important;
+ opacity:1 !important;
+ pointer-events:auto !important;
+ position:relative !important;
+ z-index:2 !important;
+}
+.entry{
+ display:flex !important;
+ align-items:center !important;
+ justify-content:center !important;
+ visibility:visible !important;
+ min-height:76px !important;
+}
+.keypad{
+ display:grid !important;
+ grid-template-columns:repeat(3,minmax(70px,110px)) !important;
+ justify-content:center !important;
+ width:100% !important;
+}
+.keypad .key{
+ display:flex !important;
+ align-items:center !important;
+ justify-content:center !important;
+ pointer-events:auto !important;
+ visibility:visible !important;
+ opacity:1 !important;
+}
+input.nameinput{
+ display:block !important;
+ width:100% !important;
+ min-height:58px !important;
+ visibility:visible !important;
+ opacity:1 !important;
+ pointer-events:auto !important;
+ user-select:text !important;
+ -webkit-user-select:text !important;
+ touch-action:auto !important;
+}
+@media(max-width:700px){
+ .answers{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important}
+ .answers .answer{min-height:72px !important;font-size:38px !important}
+ .grid2,.grid3{grid-template-columns:1fr !important}
+ .keypad{grid-template-columns:repeat(3,minmax(72px,96px)) !important}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -183,7 +253,7 @@ var state={page:"home",learnOp:"add",level:1,current:null,answered:false,used:{}
 var icons=["🍎","⚽","⭐","●","🌼","✏️","🟦","🐞"];
 
 function save(){try{localStorage.setItem("math20settings",JSON.stringify(settings));}catch(e){}}
-function makeBtn(txt,fn,cls){var b=document.createElement("button");b.className=cls||"bigbtn";b.appendChild(document.createTextNode(txt));b.onclick=fn;return b;}
+function makeBtn(txt,fn,cls){var b=document.createElement("button");b.type="button";b.className=cls||"bigbtn";b.appendChild(document.createTextNode(txt));b.onclick=fn;return b;}
 function clearScreen(){while(screen.firstChild)screen.removeChild(screen.firstChild);}
 function setNav(back,home){while(nav.firstChild)nav.removeChild(nav.firstChild);if(back)nav.appendChild(makeBtn("← NAZAD",goBack,"smallbtn"));if(home)nav.appendChild(makeBtn("⌂ POČETNA",showHome,"smallbtn"));}
 function heading(t){var h=document.createElement("h2");h.appendChild(document.createTextNode(t));screen.appendChild(h);}
@@ -260,9 +330,9 @@ function checkChoice(b,v,t,next,advanceWrong){
 function nextButton(next){if(settings.autoNext&&settings.autoDelay!=="manual")setTimeout(next,Number(settings.autoDelay)*1000);else{var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("SLJEDEĆI ZADATAK",next));screen.appendChild(ac);}}
 function renderInputTask(t){
  var p=document.createElement("div");p.className="problem";p.appendChild(document.createTextNode(t.a+" "+opSym(t.op)+" "+t.b+" ="));screen.appendChild(p);
- var e=document.createElement("div");e.className="entry";screen.appendChild(e);var val="",kp=document.createElement("div");kp.className="keypad",nums=[1,2,3,4,5,6,7,8,9,0];
- for(var i=0;i<nums.length;i++)(function(n){kp.appendChild(makeBtn(String(n),function(){if(val.length<2){val+=String(n);e.innerHTML=val;}},"key"));})(nums[i]);screen.appendChild(kp);
- var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("OBRIŠI",function(){val="";e.innerHTML="";},"secondary"));ac.appendChild(makeBtn("PROVJERI",function(){if(val==="")return;var ok=Number(val)===t.ans,f=document.getElementById("feedback");audio(ok);f.innerHTML=ok?"BRAVO! TAČNO.":"POKUŠAJ PONOVO.";f.className="feedback "+(ok?"good":"bad");if(ok){state.answered=true;nextButton(newLearnTask);}}));ac.appendChild(makeBtn("POMOĆ",function(){showHelp(t);},"secondary"));screen.appendChild(ac);var f=document.createElement("div");f.id="feedback";f.className="feedback";screen.appendChild(f);
+ var e=document.createElement("input");e.className="entry";e.type="text";e.inputMode="numeric";e.pattern="[0-9]*";e.maxLength=2;e.setAttribute("aria-label","Upiši rezultat");screen.appendChild(e);var val="",kp=document.createElement("div");kp.className="keypad",nums=[1,2,3,4,5,6,7,8,9,0];
+ for(var i=0;i<nums.length;i++)(function(n){kp.appendChild(makeBtn(String(n),function(){if(val.length<2){val+=String(n);e.value=val;}},"key"));})(nums[i]);screen.appendChild(kp);
+ var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("OBRIŠI",function(){val="";e.value="";},"secondary"));ac.appendChild(makeBtn("PROVJERI",function(){val=e.value||val;if(val==="")return;var ok=Number(val)===t.ans,f=document.getElementById("feedback");audio(ok);f.innerHTML=ok?"BRAVO! TAČNO.":"POKUŠAJ PONOVO.";f.className="feedback "+(ok?"good":"bad");if(ok){state.answered=true;nextButton(newLearnTask);}}));ac.appendChild(makeBtn("POMOĆ",function(){showHelp(t);},"secondary"));screen.appendChild(ac);var f=document.createElement("div");f.id="feedback";f.className="feedback";screen.appendChild(f);
 }
 function renderNumberLine(t,steps,replace){
  if(replace){var old=document.getElementById("numline");if(old&&old.parentNode)old.parentNode.removeChild(old);}
@@ -285,7 +355,7 @@ function showSeriesResult(){var s=state.series,pct=Math.round(s.correct/s.total*
 function showQuizSetup(){state.page="quizSetup";clearScreen();setNav(true,true);heading("BRZI KVIZ — 10 ZADATAKA");var g=document.createElement("div");g.className="grid3",arr=[["SABIRANJE","add"],["ODUZIMANJE","sub"],["SABIRANJE I ODUZIMANJE","both"]];for(var i=0;i<arr.length;i++)(function(x){g.appendChild(makeBtn(x[0],function(){startSeries(x[1],10);state.series.quiz=true;},"choice"));})(arr[i]);screen.appendChild(g);}
 
 function showCompetitionSetup(){state.page="competitionSetup";clearScreen();setNav(true,true);heading("TAKMIČENJE");var g=document.createElement("div");g.className="grid3";for(var n=2;n<=5;n++)(function(num){g.appendChild(makeBtn(String(num),function(){competitionNames(num);},"choice"));})(n);screen.appendChild(g);}
-function competitionNames(n){clearScreen();setNav(true,true);heading("UNESI IMENA UČENIKA");var p=document.createElement("div");p.className="panel",inputs=[];for(var i=0;i<n;i++){var r=document.createElement("div");r.className="formrow";var l=document.createElement("label");l.innerHTML="UČENIK "+(i+1);var inp=document.createElement("input");inp.className="nameinput";inp.maxLength=16;inp.placeholder="Učenik "+(i+1);r.appendChild(l);r.appendChild(inp);p.appendChild(r);inputs.push(inp);}screen.appendChild(p);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("DALJE",function(){var names=[];for(var j=0;j<inputs.length;j++)names.push(inputs[j].value.replace(/^\s+|\s+$/g,"")||("Učenik "+(j+1)));competitionOptions(names);}));screen.appendChild(ac);}
+function competitionNames(n){clearScreen();setNav(true,true);heading("UNESI IMENA UČENIKA");var p=document.createElement("div");p.className="panel",inputs=[];for(var i=0;i<n;i++){var r=document.createElement("div");r.className="formrow";var l=document.createElement("label");l.innerHTML="UČENIK "+(i+1);var inp=document.createElement("input");inp.className="nameinput";inp.type="text";inp.autocomplete="off";inp.autocapitalize="words";inp.maxLength=16;inp.placeholder="Učenik "+(i+1);r.appendChild(l);r.appendChild(inp);p.appendChild(r);inputs.push(inp);}screen.appendChild(p);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("DALJE",function(){var names=[];for(var j=0;j<inputs.length;j++)names.push(inputs[j].value.replace(/^\s+|\s+$/g,"")||("Učenik "+(j+1)));competitionOptions(names);}));screen.appendChild(ac);}
 function competitionOptions(names){clearScreen();setNav(true,true);heading("POSTAVKE TAKMIČENJA");var op="both",max=10,total=5,p=document.createElement("div");p.className="panel";function group(title,arr,setter){var h=document.createElement("h3");h.innerHTML=title;p.appendChild(h);var g=document.createElement("div");g.className="grid3";for(var i=0;i<arr.length;i++)(function(x){g.appendChild(makeBtn(x[0],function(){setter(x[1]);},"choice"));})(arr[i]);p.appendChild(g);}group("OPERACIJA",[["SABIRANJE","add"],["ODUZIMANJE","sub"],["OBOJE","both"]],function(v){op=v;});group("TEŽINA",[["LAKO — DO 5",5],["SREDNJE — DO 10",10],["TEŽE — DO 20",20]],function(v){max=v;});group("ZADATAKA PO UČENIKU",[["5",5],["10",10],["15",15]],function(v){total=v;});screen.appendChild(p);var ac=document.createElement("div");ac.className="actions";ac.appendChild(makeBtn("POČNI TAKMIČENJE",function(){startCompetition(names,op,max,total);}));screen.appendChild(ac);}
 function startCompetition(names,op,max,total){var players=[];for(var i=0;i<names.length;i++)players.push({name:names[i],score:0,done:0});state.page="competition";state.used={};state.competition={players:players,op:op,max:max,total:total,turn:0};nextCompetition();}
 function nextCompetition(){var c=state.competition,done=true;for(var i=0;i<c.players.length;i++)if(c.players[i].done<c.total)done=false;if(done){finishCompetition();return;}var p=c.players[c.turn%c.players.length];c.turn++;c.currentPlayer=p;state.answered=false;state.current=genTask(c.op,c.max,state.used);renderCompetition();}
